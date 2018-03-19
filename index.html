@@ -54,14 +54,14 @@
 
     <div class="row">
         <div class="col-sm">
-            <div class="list-group">
-                <button type="button" class="list-group-item list-group-item-action active">
-                    Cras justo odio
+            <p>test</p>
+            <div id="trialList" class="list-group">
+                <button v-for="trial in trials"
+                        type="button"
+                        v-on:click="trialClick(trial)"
+                        class="list-group-item list-group-item-action">
+                    {{trial.date}}
                 </button>
-                <button type="button" class="list-group-item list-group-item-action">Dapibus ac facilisis in</button>
-                <button type="button" class="list-group-item list-group-item-action">Morbi leo risus</button>
-                <button type="button" class="list-group-item list-group-item-action">Porta ac consectetur ac</button>
-                <button type="button" class="list-group-item list-group-item-action" disabled>Vestibulum at eros</button>
             </div>
         </div>
         <div class="col-sm">
@@ -78,6 +78,9 @@
         integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
         crossorigin="anonymous"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+<script src="https://www.gstatic.com/firebasejs/4.11.0/firebase.js"></script>
+<script src="https://www.gstatic.com/firebasejs/4.11.0/firebase-firestore.js"></script>
 <script src="data.js"></script>
 </body>
 </html>
