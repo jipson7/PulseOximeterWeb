@@ -54,10 +54,12 @@
 
     <div class="row">
         <div class="col-sm-4">
+            <button v-on:click="analyze" type="button" class="btn btn-success btn-block">Analyze</button>
+            <hr>
             <trial-list></trial-list>
         </div>
         <div class="col-sm-8">
-            <p>temp</p>
+            <data-view></data-view>
         </div>
     </div>
 

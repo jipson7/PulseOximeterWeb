@@ -1,7 +1,12 @@
 
 function createApp(db) {
     return new Vue({
-        el: '#app'
+        el: '#app',
+        methods: {
+            analyze: function() {
+                console.log(_trials);
+            }
+        }
     });
 }
 
