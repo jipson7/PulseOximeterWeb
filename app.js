@@ -1,10 +1,7 @@
 
 function createApp(db) {
     return new Vue({
-        el: '#app',
-        data: {
-            db: db
-        }
+        el: '#app'
     });
 }
 
@@ -25,6 +22,6 @@ function initializeFirebase() {
 
 
 (function() {
-    var db = initializeFirebase();
-    createApp(db);
+    Vue.prototype.$db = initializeFirebase();
+    createApp();
 })();
