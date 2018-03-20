@@ -17,6 +17,8 @@ Vue.component('trial-list', {
             col.forEach(function(entry) {
                 var trial = entry.data();
                 trial.key = entry.id;
+                trial.devices = [];
+                trial.selected = false;
                 _trials.push(trial);
             });
         });
