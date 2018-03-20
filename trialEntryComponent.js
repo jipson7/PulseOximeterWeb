@@ -16,11 +16,11 @@ Vue.component('trial-entry', {
 
     props: ['trial', 'trialkey'],
     methods: {
-        toggleTrial: function() {
-            console.log(this.trial.devices);
+        toggleDevice: function(device) {
+            device.selected = !device.selected;
         },
-        toggleDevice: function() {
-            console.log("device");
+        isDeviceActive: function(device) {
+            return device.selected;
         },
         timeAgo: function(start) {
             return jQuery.timeago(start);
@@ -34,8 +34,7 @@ Vue.component('trial-entry', {
     },
     template:
         `   
-          <a class="list-group-item list-group-item-action flex-column align-items-start"
-            v-on:click="toggleTrial()">
+          <a class="list-group-item list-group-item-action flex-column align-items-start">
             <div class="d-flex w-100 justify-content-between">
               <h6 class="mb-1">{{trial.date}}</h6>
               <small>{{timeAgo(trial.start)}}</small>
@@ -43,7 +42,8 @@ Vue.component('trial-entry', {
             <b>Devices</b>
             <ul class="list-group">
                 <li v-for="device in trial.devices" class="list-group-item"
-                    v-on:click="toggleDevice">{{device.description}}</li>
+                    v-bind:class="{ 'list-group-item-primary': isDeviceActive(device) }"
+                    v-on:click="toggleDevice(device)">{{device.description}}</li>
             </ul>
           </a>
         `
