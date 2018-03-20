@@ -1,20 +1,14 @@
-function createDeviceListener(trial, trialKey, db) {
+
+
+function createDevicesListener(trial, trialKey, db) {
     trial.devices = [];
-    db.collection("trials").doc(trialKey)
+    trial._devicesListener = db.collection("trials").doc(trialKey)
         .collection("devices").onSnapshot(function(querySnapshot) {
-        console.log("Devices Received: " + querySnapshot.size);
         querySnapshot.forEach(function(device) {
-            console.log(this)
             trial.devices.push(device.data());
         });
     });
 }
-
-function destroyDeviceListener(trial, trialKey, db) {
-    db.collection("trials").doc(trialKey)
-        .collection("devices").onSnapshot(function() {});
-}
-
 
 Vue.component('trial-entry', {
 
@@ -25,10 +19,10 @@ Vue.component('trial-entry', {
         }
     },
     created: function () {
-        createDeviceListener(this.trial, this.trialkey, this.$db);
+        createDevicesListener(this.trial, this.trialkey, this.$db);
     },
     destroyed: function() {
-        destroyDeviceListener(this.trial, this.trialkey, this.$db);
+        this.trial._devicesListener.unsubscribe();
     },
     template:
         `

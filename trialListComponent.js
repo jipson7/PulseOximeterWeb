@@ -1,22 +1,7 @@
 
 var _trials = [];
 
-function createTrialListener(db) {
-    db.collection("trials").onSnapshot(function(col) {
-        console.log("Updates Received: " + col.size);
-        console.log("Clearing Trials...");
-        _trials.length = 0;
-        col.forEach(function(trial) {
-            var entry = trial.data();
-            entry.key = trial.id;
-            _trials.push(entry);
-        });
-    });
-}
-
-function destroyTrialListener(db) {
-    db.collection("trials").onSnapshot(function() {});
-}
+var _trialListener = null;
 
 Vue.component('trial-list', {
 
@@ -27,10 +12,17 @@ Vue.component('trial-list', {
         };
     },
     created: function() {
-        createTrialListener(this.$db);
+        _trialListener = this.$db.collection("trials").onSnapshot(function(col) {
+            _trials.length = 0;
+            col.forEach(function(entry) {
+                var trial = entry.data();
+                trial.key = entry.id;
+                _trials.push(trial);
+            });
+        });
     },
     destroyed: function () {
-        destroyTrialListener(this.$db);
+        _trialListener.unsubscribe();
     },
     template:
         `
