@@ -41,8 +41,8 @@ Vue.component('trial-entry', {
               <small>{{timeAgo(trial.start)}}</small>
             </div>
             <b>Devices</b>
-            <ul>
-                <li v-for="device in trial.devices"
+            <ul class="list-group">
+                <li v-for="device in trial.devices" class="list-group-item"
                     v-on:click="toggleDevice">{{device.description}}</li>
             </ul>
           </a>
