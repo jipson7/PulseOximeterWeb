@@ -56,9 +56,9 @@
         <div class="col-sm">
             <p>test</p>
             <div id="trialList" class="list-group">
-                <button v-for="(trial, trialID) in trials"
+                <button v-for="(trial, index) in trials"
                         type="button"
-                        v-on:click="trialClick(trialID)"
+                        v-on:click="trialClick(trial.key)"
                         class="list-group-item list-group-item-action">
                     {{trial.date}}
                 </button>

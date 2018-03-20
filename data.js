@@ -1,5 +1,21 @@
-var trials = {};
+
 const TRIALS_COLLECTION = "trials";
+
+var trials = [];
+
+function showTrialList() {
+    return new Vue({
+        el: '#trialList',
+        data: {
+            trials: trials
+        },
+        methods: {
+            trialClick: function (trialID) {
+                getDevicesForTrial(trialID);
+            }
+        }
+    });
+}
 
 function initializeFirebase() {
     // Initialize Firebase
@@ -17,31 +33,20 @@ function initializeFirebase() {
 }
 
 function createTrialListener(db) {
-    db.collection(TRIALS_COLLECTION).onSnapshot(function(querySnapshot) {
-            querySnapshot.forEach(function(trial) {
-                console.log((trial.data()).date);
-                trials[trial.id] = trial.data();
+    db.collection(TRIALS_COLLECTION).onSnapshot(function(col) {
+            console.log("Updates Received: " + col.size);
+            console.log("Clearing Trials...");
+            trials.length = 0;
+            col.forEach(function(trial) {
+                var entry = trial.data();
+                entry.key = trial.id;
+                trials.push(entry);
             });
-            showTrialList();
         });
 }
 
-function showTrialList() {
-    return new Vue({
-        el: '#trialList',
-        data: {
-            trials: trials
-        },
-        methods: {
-            trialClick: function (trialID) {
-                getDevicesForTrial(trialID);
-            }
-        }
-    });
-}
-
-function getDevicesForTrial(trialID) {
-    console.log(trialID);
+function getDevicesForTrial(trialKey) {
+    console.log(trialKey);
 /*    var deviceCollection = db.collection(TRIALS_COLLECTION).doc(trialID).collection("devices");
     deviceCollection.get()
         .then(function(querySnapshot) {
@@ -54,6 +59,7 @@ function getDevicesForTrial(trialID) {
 }
 
 (function() {
+    showTrialList();
     var db = initializeFirebase();
     createTrialListener(db);
 })();
