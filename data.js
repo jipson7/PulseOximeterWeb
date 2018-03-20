@@ -1,35 +1,30 @@
-
-// Initialize Firebase
-var config = {
-    apiKey: "AIzaSyBKkJ72xZVPA8CX4ETB2YVZ4gcBAfv1mIU",
-    authDomain: "pulseoximeterapp.firebaseapp.com",
-    databaseURL: "https://pulseoximeterapp.firebaseio.com",
-    projectId: "pulseoximeterapp",
-    storageBucket: "pulseoximeterapp.appspot.com",
-    messagingSenderId: "299724722089"
-};
-firebase.initializeApp(config);
-
-var db = firebase.firestore()
-
 var trials = {};
+const TRIALS_COLLECTION = "trials";
 
-var trialsCollection = db.collection("trials");
+function initializeFirebase() {
+    // Initialize Firebase
+    var config = {
+        apiKey: "AIzaSyBKkJ72xZVPA8CX4ETB2YVZ4gcBAfv1mIU",
+        authDomain: "pulseoximeterapp.firebaseapp.com",
+        databaseURL: "https://pulseoximeterapp.firebaseio.com",
+        projectId: "pulseoximeterapp",
+        storageBucket: "pulseoximeterapp.appspot.com",
+        messagingSenderId: "299724722089"
+    };
+    firebase.initializeApp(config);
 
-function populateTrials(trialsQuery) {
-    trialsQuery.forEach(function(trial) {
-        trials[trial.id] = trial.data();
-        trials
-    });
+    return firebase.firestore()
 }
 
-trialsCollection.get()
-.then(function(querySnapshot) {
-    populateTrials(querySnapshot);
-    showTrialList();
-}).catch(function(error) {
-    console.log("Error getting documents: ", error);
-});
+function createTrialListener(db) {
+    db.collection(TRIALS_COLLECTION).onSnapshot(function(querySnapshot) {
+            querySnapshot.forEach(function(trial) {
+                console.log((trial.data()).date);
+                trials[trial.id] = trial.data();
+            });
+            showTrialList();
+        });
+}
 
 function showTrialList() {
     return new Vue({
@@ -46,7 +41,8 @@ function showTrialList() {
 }
 
 function getDevicesForTrial(trialID) {
-    var deviceCollection = trialsCollection.doc(trialID).collection("devices");
+    console.log(trialID);
+/*    var deviceCollection = db.collection(TRIALS_COLLECTION).doc(trialID).collection("devices");
     deviceCollection.get()
         .then(function(querySnapshot) {
             querySnapshot.forEach(function(device) {
@@ -54,5 +50,10 @@ function getDevicesForTrial(trialID) {
             });
         }).catch(function(error) {
             console.log("Error getting sub-collection documents", err);
-        });
+        });*/
 }
+
+(function() {
+    var db = initializeFirebase();
+    createTrialListener(db);
+})();
