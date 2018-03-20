@@ -12,14 +12,21 @@ firebase.initializeApp(config);
 
 var db = firebase.firestore()
 
-var trials = [];
+var trials = {};
 
-db.collection("trials").get()
-.then(function(querySnapshot) {
-    querySnapshot.forEach(function(trial) {
-        trials.push(trial.data());
+var trialsCollection = db.collection("trials");
+
+function populateTrials(trialsQuery) {
+    trialsQuery.forEach(function(trial) {
+        trials[trial.id] = trial.data();
+        trials
     });
-    var trialList = showTrialList();
+}
+
+trialsCollection.get()
+.then(function(querySnapshot) {
+    populateTrials(querySnapshot);
+    showTrialList();
 }).catch(function(error) {
     console.log("Error getting documents: ", error);
 });
@@ -30,13 +37,22 @@ function showTrialList() {
         data: {
             trials: trials
         },
-        created: function() {
-            console.log(this.trials);
-        },
         methods: {
-            trialClick: function (trial) {
-                console.log(trial.date);
+            trialClick: function (trialID) {
+                getDevicesForTrial(trialID);
             }
         }
     });
+}
+
+function getDevicesForTrial(trialID) {
+    var deviceCollection = trialsCollection.doc(trialID).collection("devices");
+    deviceCollection.get()
+        .then(function(querySnapshot) {
+            querySnapshot.forEach(function(device) {
+                console.log(device.data());
+            });
+        }).catch(function(error) {
+            console.log("Error getting sub-collection documents", err);
+        });
 }

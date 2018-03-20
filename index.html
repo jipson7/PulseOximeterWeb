@@ -56,9 +56,9 @@
         <div class="col-sm">
             <p>test</p>
             <div id="trialList" class="list-group">
-                <button v-for="trial in trials"
+                <button v-for="(trial, trialID) in trials"
                         type="button"
-                        v-on:click="trialClick(trial)"
+                        v-on:click="trialClick(trialID)"
                         class="list-group-item list-group-item-action">
                     {{trial.date}}
                 </button>
@@ -82,5 +82,6 @@
 <script src="https://www.gstatic.com/firebasejs/4.11.0/firebase.js"></script>
 <script src="https://www.gstatic.com/firebasejs/4.11.0/firebase-firestore.js"></script>
 <script src="data.js"></script>
+
 </body>
 </html>
