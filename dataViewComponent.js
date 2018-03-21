@@ -15,12 +15,16 @@ function createDataListeners(db) {
 
     _trials.forEach(function(trial) {
         trial.devices.forEach(function(device) {
-            if (device.selected) {
-                var listenerKey = "" + trial.key + device.key;
+            var listenerKey = "" + trial.key + device.key;
+            //check if listener is selected but not exists
+            if ((device.selected) && !(listenerKey in _dataListeners)) {
                 var listener = db.collection("trials").doc(trial.key)
                     .collection("devices").doc(device.key).collection("data")
                     .onSnapshot(dataListener);
                 _dataListeners[listenerKey] = listener;
+            } else if ((listenerKey in _dataListeners) && (!device.selected)) {
+                (_dataListeners[listenerKey])();
+                delete _dataListeners[listenerKey];
             }
         });
     });
