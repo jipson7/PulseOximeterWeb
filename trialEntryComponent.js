@@ -1,7 +1,7 @@
 
 
 function createDevicesListener(trial, trialKey, db) {
-    trial._devicesListener = db.collection("trials").doc(trialKey)
+    trial._devicesUnsubscribe = db.collection("trials").doc(trialKey)
         .collection("devices").onSnapshot(function(querySnapshot) {
         querySnapshot.forEach(function(entry) {
             var device = entry.data();
@@ -30,7 +30,7 @@ Vue.component('trial-entry', {
         createDevicesListener(this.trial, this.trialkey, this.$db);
     },
     destroyed: function() {
-        this.trial._devicesListener.unsubscribe();
+        this.trial._devicesUnsubscribe();
     },
     template:
         `   

@@ -1,7 +1,7 @@
 
 var _trials = [];
 
-var _trialListener = null;
+var _trialUnsubscribe = null;
 
 Vue.component('trial-list', {
 
@@ -12,7 +12,7 @@ Vue.component('trial-list', {
         };
     },
     created: function() {
-        _trialListener = this.$db.collection("trials").onSnapshot(function(col) {
+        _trialUnsubscribe = this.$db.collection("trials").onSnapshot(function(col) {
             _trials.length = 0;
             col.forEach(function(entry) {
                 var trial = entry.data();
@@ -23,7 +23,7 @@ Vue.component('trial-list', {
         });
     },
     destroyed: function () {
-        _trialListener.unsubscribe();
+        _trialUnsubscribe();
     },
     template:
         `
