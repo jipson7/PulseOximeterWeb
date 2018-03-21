@@ -1,26 +1,6 @@
-function getDataConnections(trials) {
-    _dataConnections.length = 0;
-    trials.forEach(function(trial) {
-        trial.devices.forEach(function(device) {
-            if (device.selected) {
-                console.log("adding connection");
-                _dataConnections.push({
-                    trial: trial.key,
-                    device: device.key
-                });
-            }
-        });
-    });
-}
-
 function createApp(db) {
     return new Vue({
-        el: '#app',
-        methods: {
-            analyze: function() {
-                getDataConnections(_trials);
-            }
-        }
+        el: '#app'
     });
 }
 
