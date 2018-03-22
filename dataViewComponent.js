@@ -67,14 +67,14 @@ Vue.component('data-view', {
         }
     },
     methods: {
-        analyze: function() {
+        loadData: function() {
             createDataListeners(this.$db);
         }
     },
     template:
         `
         <div>
-            <button v-on:click="analyze" type="button" class="btn btn-success btn-block">Analyze</button>
+            <button v-on:click="loadData" type="button" class="btn btn-primary btn-block">Load Datasets</button>
             <hr>
             <chart :data="chartData"></chart>
         </div>
